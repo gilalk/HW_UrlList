@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useEffect } from "react";
 import './bootstrap.min.css';
 
 export default class UrlLinks extends Component {
@@ -32,7 +33,13 @@ export default class UrlLinks extends Component {
                 urls: [...this.state.urls, url],
                 value: "",
             });
-        }
+        }       
+    }
+
+    // save changes to local storage //
+    
+    onSave = () => {    
+        localStorage.setItem("urls", JSON.stringify(this.state.urls));
     }
 
 
@@ -81,7 +88,9 @@ export default class UrlLinks extends Component {
         });
     };
 
-    onSortUrls = () => {
+    // ***** sort urls function ***** //
+    onSortUrls = (e) => {
+        e.preventDefault();
         if(this.state.isSorted === true){
             this.setState({
                 urls: [...this.state.urls].sort((a, b) => a.link > b.link ? 1 : -1),
@@ -147,6 +156,7 @@ export default class UrlLinks extends Component {
                         pattern="(?:(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)(?:\.(?:[a-zA-Z\u00a1-\uffff0-9]+-?)*[a-zA-Z\u00a1-\uffff0-9]+)*(?:\.(?:[a-zA-Z\u00a1-\uffff]{2,}))(?::\d{2,5})?(?:\/[^\s]*)?" />
                     <button onClick={this.onAddUrl}>Add</button>
                     <button onClick={this.onSortUrls}>Sort</button>
+                    <button onClick={this.onSave}>Save</button>
                 </form>
                 <div className="list-group">
                     <ul>
